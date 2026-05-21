@@ -1,7 +1,11 @@
 name = "ExpMap"
 uuid = "b662f88f-7708-4474-aca6-dd4eb2952106"
-authors = ["Michel Geradin <mgeradin@gmail.com> and contributors"]
 version = "0.0.1"
+authors = ["Michel Geradin <mgeradin@gmail.com> and contributors"]
+
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 
 [compat]
-julia = "1.12"
+julia = "1.9"

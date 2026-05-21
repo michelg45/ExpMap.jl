@@ -1,6 +1,9 @@
 .DS_Store
+Manifest.toml
 /docs/Manifest*.toml
 /docs/build/
 src/.DS_Store
 test/.DS_Store
 test/src/.DS_Store
+/docs/make.old
+/docs/src/index.old
