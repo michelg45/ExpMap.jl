@@ -1,3 +1,6 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 ExpMap = "b662f88f-7708-4474-aca6-dd4eb2952106"
+
+[compat]
+Documenter = "1.17.0"
