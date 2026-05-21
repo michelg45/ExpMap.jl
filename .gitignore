@@ -1,0 +1,6 @@
+.DS_Store
+/docs/Manifest*.toml
+/docs/build/
+src/.DS_Store
+test/.DS_Store
+test/src/.DS_Store
