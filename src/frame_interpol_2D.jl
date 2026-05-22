@@ -255,5 +255,5 @@ function frame_interpol_2D(H::Vector{NodeFrame}, F::Vector{Float64},
         QN[2,k] = invA \ (QN[2,k] + C[2] * Q[k])
     end
 
-    return H_P, f_P, g_P, n_P, QN
+    return  f_P, QN
 end
