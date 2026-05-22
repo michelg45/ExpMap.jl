@@ -28,7 +28,8 @@ src/
 ├── NodeFrame.jl       nodal frame — element of SE(3)
 ├── R_SO3.jl           exponential map  so(3) → SO(3)
 ├── invR_SO3.jl        logarithmic map  SO(3) → so(3)
-├── euler_to_rv.jl     ZXZ Euler angles → CRV
+├── euler_to_RV3.jl    ZXZ Euler angles → CRV
+├── frame_on_line.jl   orthonormal frame aligned on a line segment → CRV
 ├── T_SO3.jl           tangent operator T(φ)
 ├── DT_SO3.jl          Gâteaux derivative of T(φ)·a w.r.t. φ
 ├── DinvT_SO3.jl        Gâteaux derivative of T⁻¹(φ)·a w.r.t. φ
@@ -57,6 +58,10 @@ src/
 ├── frame_interpol_1D.jl   SE(3) frame interpolation on a 1D element
 └── frame_interpol_2D.jl   SE(3) frame interpolation on a 2D surface element
 ```
+
+## Package installation
+
+pkg> add https://github.com/michelg45/ExpMap.jl
 
 ## Quick example
 

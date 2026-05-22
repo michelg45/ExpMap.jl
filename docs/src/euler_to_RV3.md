@@ -2,9 +2,9 @@
 CurrentModule = ExpMap
 ```
 
-# euler\_to\_RV — Euler Angles (ZXZ) to CRV
+# euler\_to\_RV3 — Euler Angles (ZXZ) to CRV
 
-`euler_to_RV` converts a set of **classical ZXZ Euler angles** (φ, θ, ψ) to
+`euler_to_RV3` converts a set of **classical ZXZ Euler angles** (φ, θ, ψ) to
 the equivalent **Cartesian Rotation Vector** (CRV) ψ ∈ ℝ³.
 
 ## ZXZ Euler angle convention
@@ -35,7 +35,7 @@ then ψ (about z again).
 ## Singularity (gimbal lock)
 
 At **θ = 0** and **θ = π** the ZXZ parameterisation is singular: only φ + ψ
-(or φ − ψ) is determined, not φ and ψ individually.  `euler_to_RV` still
+(or φ − ψ) is determined, not φ and ψ individually.  `euler_to_RV3` still
 returns a valid CRV via `invR_SO3`, but the decomposition back to Euler angles
 is non-unique at these points.
 
@@ -44,5 +44,5 @@ is non-unique at these points.
 **See also:** [`R_SO3`](@ref), [`invR_SO3`](@ref)
 
 ```@docs
-euler_to_RV
+euler_to_RV3
 ```

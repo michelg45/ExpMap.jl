@@ -27,7 +27,8 @@ makedocs(
         "SO(3) functions" => [
             "R_SO3"           => "R_SO3.md",
             "invR_SO3"        => "invR_SO3.md",
-            "euler_to_RV"     => "euler_to_rv.md",
+            "euler_to_RV3"    => "euler_to_RV3.md",
+            "frame_on_line"   => "frame_on_line.md",
             "T_SO3"           => "T_SO3.md",
             "DT_SO3"          => "DT_SO3.md",
             "DinvT_SO3"       => "DinvT_SO3.md",

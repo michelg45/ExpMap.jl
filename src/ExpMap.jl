@@ -39,7 +39,8 @@ include(joinpath(@__DIR__, "R_SO3.jl"))
 include(joinpath(@__DIR__, "T_SO3.jl"))
 include(joinpath(@__DIR__, "invT_SO3.jl"))
 include(_src_dir * "invR_SO3.jl")
-include(joinpath(@__DIR__, "euler_to_rv.jl"))
+include(joinpath(@__DIR__, "euler_to_RV3.jl"))
+include(joinpath(@__DIR__, "frame_on_line.jl"))
 include(joinpath(@__DIR__, "NodeFrame.jl"))
 include(joinpath(@__DIR__, "exp_SE3.jl"))
 include(joinpath(@__DIR__, "log_SE3.jl"))
@@ -65,7 +66,7 @@ include(joinpath(@__DIR__, "frame_interpol_2D.jl"))
 # ── Public API ────────────────────────────────────────────────────────────────
 export VEC3, MAT3, RV3, VEC6, MAT6, NodeFrame
 export vec_mat6, mat_mat6
-export R_SO3, invR_SO3, euler_to_RV, T_SO3, invT_SO3
+export R_SO3, invR_SO3, euler_to_RV3, frame_on_line, T_SO3, invT_SO3
 export T_functions, invT_functions
 export tilde, outerp, dotp, crossp, norm2
 export VEC6_unit

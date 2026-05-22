@@ -108,3 +108,25 @@ function R_SO3(psi::RV3, a::VEC3)
         return cos(theta) * a + sin(theta) * crossp(k, a) + (1 - cos(theta)) * k * dotp(k, a)
     end
 end
+
+"""
+    R_SO3(phi::Float64, axe::Int) → MAT3
+
+Return the 3×3 rotation matrix for a rotation of angle `phi` (radians)
+about coordinate axis `axe` (1 = x-axis, 2 = y-axis, 3 = z-axis).
+
+Equivalent to `R_SO3(RV3(phi·eₐₓₑ))` where `eₐₓₑ` is the unit basis vector
+along axis `axe`.
+
+## Example
+```julia
+julia> R_SO3(π/2, 3)    # 90° rotation about the z-axis
+```
+
+**See also:** [`R_SO3(psi::RV3)`](@ref), [`euler_to_RV3`](@ref)
+"""
+function R_SO3(phi::Float64, axe::Int)
+    n      = zeros(3)
+    n[axe] = 1.0
+    return R_SO3(RV3(phi * n))
+end

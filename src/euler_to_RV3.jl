@@ -1,5 +1,5 @@
 # ==============================================================================
-# euler_to_rv.jl — Euler Angles (ZXZ) to Cartesian Rotation Vector
+# euler_to_RV3.jl — Euler Angles (ZXZ) to Cartesian Rotation Vector
 # ==============================================================================
 #
 # Converts a set of classical ZXZ Euler angles (φ, θ, ψ) into the equivalent
@@ -35,7 +35,7 @@
 
 
 """
-    euler_to_RV(phi::Float64, theta::Float64, psi::Float64) → RV3
+    euler_to_RV3(phi::Float64, theta::Float64, psi::Float64) → RV3
 
 Convert the ZXZ Euler angles `(phi, theta, psi)` to the equivalent Cartesian
 Rotation Vector (CRV).
@@ -58,7 +58,7 @@ via the logarithmic map [`invR_SO3`](@ref).
 
 ## Example
 ```julia
-julia> rv = euler_to_RV(0.0, π/9, 0.0)
+julia> rv = euler_to_RV3(0.0, π/9, 0.0)
 RV3([3.490659e-01, 0.000000e+00, 0.000000e+00])
 ```
 
@@ -70,7 +70,7 @@ RV3([3.490659e-01, 0.000000e+00, 0.000000e+00])
 
 **See also:** [`R_SO3`](@ref), [`invR_SO3`](@ref)
 """
-function euler_to_RV(phi::Float64, theta::Float64, psi::Float64)
+function euler_to_RV3(phi::Float64, theta::Float64, psi::Float64)
     R = R_SO3(psi, 3) * R_SO3(theta, 1) * R_SO3(phi, 3)
     return invR_SO3(R)
 end
