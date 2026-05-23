@@ -219,10 +219,10 @@ function frame_interpol_2D(H::Vector{NodeFrame}, F::Vector{Float64},
 
     # ── Sensitivity matrices QN[α,k] = ∂f_P[α]/∂p_k ─────────────────────────
     # For each node k:
-    #   invTm    = invT_SE3(p[k]; trp=true)     — transposed variant
-    #   invTp    = invT_SE3(p[k]; trp=false)    — standard variant
+    #   invTm    = invT_SE3(p[k]; sign_p = "-")     — transposed variant
+    #   invTp    = invT_SE3(p[k]; sign_p = "+")    — standard variant
     #   DTmpf[α] = D_p(invT_SE3⁻(p[k])·f_P[α]) — Gâteaux derivative, sign "-"
-    #   Q[k]     = F[k]·invTm
+    #   Q[k]     = F[k]·invTp
     #   B[α]     = F[k]·DTmpf[α] + DFs[k,α]·I₆
     #   QN[α,k]  = B[α]·invTp
     #   C[α]    -= B[α]·invTm
