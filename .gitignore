@@ -7,3 +7,4 @@ test/.DS_Store
 test/src/.DS_Store
 /docs/make.old
 /docs/src/index.old
+/notebooks
