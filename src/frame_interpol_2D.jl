@@ -240,7 +240,7 @@ function frame_interpol_2D(H::Vector{NodeFrame}, F::Vector{Float64},
         invTp  = invT_SE3(a; sign_p = "+")
         DTmpf1 = DinvT_SE3(a, f_P[1]; sign_p = "-")
         DTmpf2 = DinvT_SE3(a, f_P[2]; sign_p = "-")
-        Q[k]   = F[k] * invTm
+        Q[k]   = F[k] * invTp
         B1     = F[k] * DTmpf1 + DFs[k,1] * I6
         B2     = F[k] * DTmpf2 + DFs[k,2] * I6
         QN[1,k] = B1 * invTp
