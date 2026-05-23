@@ -146,8 +146,8 @@ function frame_interpol_2D(H::Vector{NodeFrame}, F::Vector{Float64},
     # ── Transform strain vectors to physical surface coordinates ──────────────
     # f_P[α] = Σ_β  f_P_ref[β] · invJ[β,α]
     f_P = Vector{VEC6}(undef, 2)
-    f_P[1] = f_P_ref[1]*invJ[1,1] + f_P_ref[2]*invJ[2,1]
-    f_P[2] = f_P_ref[1]*invJ[1,2] + f_P_ref[2]*invJ[2,2]
+    f_P[1] = f_P_ref[1]*invJ[1,1] + f_P_ref[2]*invJ[1,2]
+    f_P[2] = f_P_ref[1]*invJ[2,1] + f_P_ref[2]*invJ[2,2]
 
     # ── Tangent vectors and unit normal ───────────────────────────────────────
     g_P = Vector{VEC3}(undef, 2)
