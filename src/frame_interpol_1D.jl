@@ -131,8 +131,8 @@ function frame_interpol_1D(H::Vector{NodeFrame}, F::Vector{Float64},
 
     for k = 1:Nnodes
         a     = T_SE3_input_data(p[k])
-        invTm = invT_SE3(a; sign_p = "-")                        # invT_SE3(−p[k])
-        invTp = invT_SE3(a; sign_p = "+")                        # invT_SE3(p[k])
+        invTm = invT_SE3(a, "-")                        # invT_SE3(−p[k])
+        invTp = invT_SE3(a, "+")                        # invT_SE3(p[k])
         DTmpf = DinvT_SE3(a, f_P; sign_p = "-")        # D_p(invT_SE3(−p[k])·f_P)
         Q[k]  = F[k] * invTp
         B     = F[k] * DTmpf + DFs[k] * I6
