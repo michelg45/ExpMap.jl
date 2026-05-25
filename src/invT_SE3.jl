@@ -21,23 +21,27 @@
 #   Tu      = T(φ)·u          tangent operator applied to the translation part
 #   dTu     = DT_SO3(φ, u)   Gâteaux derivative matrix of  φ ↦ T(φ)·u
 #
-# TRANSPOSE VARIANT  (trp = true, requires T_SE3_data input)
+# sign_p == "−"  VARIANT  (evaluates invT_SE3 at −p)
 #
-#   Substitutes  invT → (T⁻¹)ᵀ,  Tu → −(T⁻¹)ᵀ·u,  dTu[:,i] → (∂T/∂φᵢ)ᵀ·u
-#   into the same block formula.
+#   Uses the identity T⁻¹(−φ) = (T⁻¹(φ))ᵀ:
+#
+#   invT_SE3(−p) = [ (T⁻¹)ᵀ      −T⁻¹ · dTu · (T⁻¹)ᵀ ]
+#                  [ 0₃ₓ₃          (T⁻¹)ᵀ              ]
+#
+#   where T⁻¹ = d.invT  and  dTu = d.dTu  (precomputed at +p, reused as-is).
 #
 # METHODS
-#   invT_SE3(p::VEC6)                         → MAT6   (forward, VEC6 input)
-#   invT_SE3(d::T_SE3_data; trp::Bool=false)  → MAT6   (from T_SE3_data)
+#   invT_SE3(p::VEC6)                          → MAT6
+#   invT_SE3(d::T_SE3_data, sign_p::String)    → MAT6   ("+" for p, "−" for −p)
 #
 # EXTERNAL DEPENDENCIES
-#   invT_SE3_input, T_SE3_data, tilde, MAT3, MAT6, VEC3
+#   invT_SE3_input, T_SE3_data, tilde, MAT3, MAT6
 #
 # ==============================================================================
 
 """
     invT_SE3(p::VEC6) → MAT6
-    invT_SE3(d::T_SE3_data; trp::Bool = false) → MAT6
+    invT_SE3(d::T_SE3_data, sign_p::String) → MAT6
 
 Construct the 6×6 inverse SE(3) tangent operator `T_SE3(p)⁻¹`.
 
@@ -50,31 +54,29 @@ where `invT = T⁻¹(φ)`, `Tu = T(φ)·u`, and `dTu = DT_SO3(φ, u)`.
 
 **First form** — `invT_SE3(p::VEC6)`: calls [`invT_SE3_input`](@ref) internally.
 
-**Second form** — `invT_SE3(d::T_SE3_data; trp = false)`: uses precomputed data
-from [`T_SE3_input_data`](@ref).  With `trp = true`, replaces:
-- `invT`       →  `(T⁻¹)ᵀ(φ)`
-- `Tu`          →  `−(T⁻¹)ᵀ(φ)·u`
-- `dTu[:,i]`    →  `(∂T/∂φᵢ)ᵀ·u`
+**Second form** — `invT_SE3(d::T_SE3_data, sign_p)`: uses precomputed data
+from [`T_SE3_input_data`](@ref).
+- `sign_p = "+"` : evaluates `invT_SE3(p)` using `d.invT`, `d.Tu`, `d.dTu`.
+- `sign_p = "-"` : evaluates `invT_SE3(−p)` using the identity T⁻¹(−φ) = (T⁻¹(φ))ᵀ:
 
-and applies the same block formula to the modified triple.
+      invT_SE3(−p) = [ (T⁻¹)ᵀ      −T⁻¹ · dTu · (T⁻¹)ᵀ ]
+                     [ 0₃ₓ₃          (T⁻¹)ᵀ              ]
+
+  where `T⁻¹ = d.invT` and `dTu = d.dTu` are reused from the `+p` computation.
 """
 function invT_SE3(p::VEC6)
     invT, Tu, dTu = invT_SE3_input(p)
     return MAT6(invT, invT * (-dTu * invT + tilde(Tu)), MAT3(), invT)
 end
 
-function invT_SE3(d::T_SE3_data; trp::Bool = false)
-    if !trp
+function invT_SE3(d::T_SE3_data, sign_p::String)
+    if sign_p == "+"
         invT = d.invT
         Tu   = d.Tu
         dTu  = d.dTu
-    else
-        u    = VEC3(d.p[1], d.p[2], d.p[3])
-        invT = transpose(d.invT)
-        Tu   = -(invT * u)                       # Tu = −(T⁻¹)ᵀ(φ)·u
-        dTu  = MAT3(transpose(d.dT[1]) * u,
-                    transpose(d.dT[2]) * u,
-                    transpose(d.dT[3]) * u)      # dTu[:,i] = (∂T/∂φᵢ)ᵀ·u
+        return MAT6(invT, invT * (-dTu * invT + tilde(Tu)), MAT3(), invT)
+    else   # sign_p == "-" : evaluate at −p using T⁻¹(−φ) = (T⁻¹(φ))ᵀ
+        invT_t = transpose(d.invT)               # (T⁻¹(φ))ᵀ
+        return MAT6(invT_t, -(d.invT * d.dTu * invT_t), MAT3(), invT_t)
     end
-    return MAT6(invT, invT * (-dTu * invT + tilde(Tu)), MAT3(), invT)
 end

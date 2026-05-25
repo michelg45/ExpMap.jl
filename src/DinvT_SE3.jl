@@ -107,7 +107,8 @@ function DinvT_SE3(a::T_SE3_data, f::VEC6; trp::Bool = false, sign_p::String = "
         D_φu = D_uφ
         D_φφ = -(tilde(Tu) + transpose(dTu * invT)) * pr3dt(dinvT, f_u) +
                pr3dt(dinvT, f_φ) + tilde(g_u) * dTu -
-               pr3dt(dinvT, transpose(dTu) * g_u) - d²Tug * invT
+    #            pr3dt(dinvT, transpose(dTu) * g_u) - d²Tug * invT
+                pr3dt(dinvT, transpose(dTu) * g_u) - transpose(invT)*d²Tug
 
         return MAT6(D_uu, D_uφ, D_φu, D_φφ)
 
@@ -122,8 +123,8 @@ function DinvT_SE3(a::T_SE3_data, f::VEC6; trp::Bool = false, sign_p::String = "
         # D_uu = D_φφ − (T⁻¹)ᵀ·dTg  (tilde term omitted, see header note)
         D_uu = D_φφ
         D_uφ = pr3dt(dinvT, f_u) -
-               pr3dt(dinvT, dTu * g_φ) -
-               transpose(invT) * (dTu * pr3dt(dinvT, f_φ) + d²Tug)
+               pr3d(dinvT, dTu * g_φ) -
+               invT * (dTu * pr3dt(dinvT, f_φ) + d²Tug)
 
         return MAT6(D_uu, D_uφ, D_φu, D_φφ)
 

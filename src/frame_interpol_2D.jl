@@ -219,9 +219,10 @@ function frame_interpol_2D(H::Vector{NodeFrame}, F::Vector{Float64},
 
     # ── Sensitivity matrices QN[α,k] = ∂f_P[α]/∂p_k ─────────────────────────
     # For each node k:
-    #   invTm    = invT_SE3(p[k]; sign_p = "-")     — transposed variant
-    #   invTp    = invT_SE3(p[k]; sign_p = "+")    — standard variant
-    #   DTmpf[α] = D_p(invT_SE3⁻(p[k])·f_P[α]) — Gâteaux derivative, sign "-"
+    #   a        = T_SE3_input_data(p[k])           — precomputed SO(3) data
+    #   invTm    = invT_SE3(a, "-")                — invT_SE3(−p[k])
+    #   invTp    = invT_SE3(a, "+")                — invT_SE3(p[k])
+    #   DTmpf[α] = D_p(invT_SE3(−p[k])·f_P[α])   — Gâteaux derivative at −p
     #   Q[k]     = F[k]·invTp
     #   B[α]     = F[k]·DTmpf[α] + DFs[k,α]·I₆
     #   QN[α,k]  = B[α]·invTp
@@ -236,8 +237,8 @@ function frame_interpol_2D(H::Vector{NodeFrame}, F::Vector{Float64},
 
     for k = 1:Nnodes
         a      = T_SE3_input_data(p[k])
-        invTm  = invT_SE3(a; sign_p = "-")
-        invTp  = invT_SE3(a; sign_p = "+")
+        invTm  = invT_SE3(a, "-")                        # invT_SE3(−p[k])
+        invTp  = invT_SE3(a, "+")                        # invT_SE3(p[k])
         DTmpf1 = DinvT_SE3(a, f_P[1]; sign_p = "-")
         DTmpf2 = DinvT_SE3(a, f_P[2]; sign_p = "-")
         Q[k]   = F[k] * invTp
@@ -255,5 +256,5 @@ function frame_interpol_2D(H::Vector{NodeFrame}, F::Vector{Float64},
         QN[2,k] = invA \ (QN[2,k] + C[2] * Q[k])
     end
 
-    return  f_P, QN
+    return  H_P, f_P, g_P, n_P, QN
 end

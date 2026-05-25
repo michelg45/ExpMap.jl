@@ -112,13 +112,14 @@ function frame_interpol_1D(H::Vector{NodeFrame}, F::Vector{Float64},
 
     # ── Sensitivity matrices Q[k] = ∂p/∂p_k  and  QN[k] = ∂f_P/∂p_k ─────────
     # For each node k (at converged p[k]):
-    #   invTm = invT_SE3(p[k], sign_p = "-")   — (invT_SE3)ᵀ variant
-    #   invTp = invT_SE3(p[k], sign_p = "+")  — standard invT_SE3
-    #   DTmpf = D_p(invT_SE3(p,"-")·f_P)  — Gâteaux derivative, sign "-"
+    #   a     = T_SE3_input_data(p[k])         — precomputed SO(3) data
+    #   invTm = invT_SE3(a, "-")               — invT_SE3(−p[k])
+    #   invTp = invT_SE3(a, "+")               — invT_SE3(p[k])
+    #   DTmpf = D_p(invT_SE3(−p[k])·f_P)      — Gâteaux derivative at −p
     #   Q[k]  = F[k]·invTp
     #   B     = F[k]·DTmpf + DFs[k]·I₆
-    #   QN[k] = B·invTp                    (before left-multiplication by A⁻¹)
-    #   C    -= B·invTm                    (accumulated correction)
+    #   QN[k] = B·invTp                        (before left-multiplication by A⁻¹)
+    #   C    -= B·invTm                        (accumulated correction)
     # Then: Q[k]  ← A⁻¹·Q[k]
     #       QN[k] ← A⁻¹·(QN[k] + C·Q[k])
 
@@ -130,9 +131,9 @@ function frame_interpol_1D(H::Vector{NodeFrame}, F::Vector{Float64},
 
     for k = 1:Nnodes
         a     = T_SE3_input_data(p[k])
-        invTm = invT_SE3(a; sign_p = "-")                        # (invT_SE3)ᵀ
-        invTp = invT_SE3(a; sign_p = "+")                       # invT_SE3
-        DTmpf = DinvT_SE3(a, f_P; sign_p = "-")               # D_p(invT_SE3⁻·f_P)
+        invTm = invT_SE3(a, "-")                        # invT_SE3(−p[k])
+        invTp = invT_SE3(a, "+")                        # invT_SE3(p[k])
+        DTmpf = DinvT_SE3(a, f_P; sign_p = "-")        # D_p(invT_SE3(−p[k])·f_P)
         Q[k]  = F[k] * invTp
         B     = F[k] * DTmpf + DFs[k] * I6
         QN[k] = B * invTp

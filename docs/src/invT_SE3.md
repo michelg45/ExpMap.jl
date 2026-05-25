@@ -19,22 +19,24 @@ invT_SE3(p) = [ T⁻¹(φ)    T⁻¹(φ)·(−dTu·T⁻¹(φ) + tilde(Tu)) ]
 
 with `invT = T⁻¹(φ)`, `Tu = T(φ)·u`, `dTu = DT_SO3(φ, u)`.
 
-## invT\_SE3 transpose variant
+## invT\_SE3 at −p
 
-With `trp = true` (requires [`T_SE3_data`](@ref) input), the substitutions are:
+With `sign_p = "-"` (requires [`T_SE3_data`](@ref) input), the operator is
+evaluated at `−p` using the identity **T⁻¹(−φ) = (T⁻¹(φ))ᵀ**:
 
 ```
-invT         →   (T⁻¹)ᵀ(φ)
-Tu           →  −(T⁻¹)ᵀ(φ)·u
-dTu[:,i]     →   (∂T/∂φᵢ)ᵀ·u
+invT_SE3(−p) = [ (T⁻¹)ᵀ      −T⁻¹ · dTu · (T⁻¹)ᵀ ]
+               [ 0₃ₓ₃          (T⁻¹)ᵀ              ]
 ```
+
+where `T⁻¹ = d.invT` and `dTu = d.dTu` are reused from the `+p` computation.
 
 ## invT\_SE3 identity check
 
 ```julia
 p  = VEC6(1.0, -0.5, 0.2,  0.3, -0.1, 0.8)
 a  = T_SE3_input_data(p)
-T_SE3(a) * invT_SE3(a)   # should equal I₆  (identity MAT6)
+T_SE3(a, "+") * invT_SE3(a, "+")   # should equal I₆  (identity MAT6)
 ```
 
 **Dependencies:** [`invT_SE3_input`](@ref)

@@ -21,10 +21,10 @@ T_SE3(p) = [ T(φ)    dTu − tilde(Tu) · T(φ) ]
 with `T(φ) = T_SO3(φ)`, `Tu = T(φ)·u`, and `dTu = DT_SO3(φ, u)`.
 The off-diagonal block encodes the coupling between translation and rotation.
 
-## T\_SE3 transpose variant
+## T\_SE3 at −p
 
-With `trp = true` (requires [`T_SE3_data`](@ref) input), the same block
-formula is applied with the substitutions:
+With `sign_p = "-"` (requires [`T_SE3_data`](@ref) input), the operator is
+evaluated at `−p = [−u; −φ]` using the identity **T(−φ) = T(φ)ᵀ**:
 
 ```
 T(φ)       →   T(φ)ᵀ
@@ -49,9 +49,9 @@ p = VEC6(1.0, 0.0, 0.0,  0.0, 0.0, π/4)
 M = T_SE3(p)                    # 6×6 MAT6
 
 # With precomputed data (shares work with DT_SE3, DinvT_SE3)
-a = T_SE3_input_data(p)
-M  = T_SE3(a)
-Mt = T_SE3(a; trp = true)       # transposed variant
+a  = T_SE3_input_data(p)
+M  = T_SE3(a, "+")              # T_SE3(p)
+Mm = T_SE3(a, "-")              # T_SE3(−p)
 ```
 
 **Dependencies:** [`T_SE3_input`](@ref)
