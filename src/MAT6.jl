@@ -193,7 +193,7 @@ Each column of the result is `m1` applied to the corresponding column of `m2`.
 """
 Base.:*(m1::MAT6, m2::MAT6) = MAT6(ntuple(j -> m1 * getfield(m2, j), 6)...)
 
-
+Base.broadcastable(m::MAT6) = Ref(m)
 # ------------------------------------------------------------------------------
 # Linear algebra
 # ------------------------------------------------------------------------------

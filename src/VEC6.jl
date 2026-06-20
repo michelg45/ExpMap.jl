@@ -113,6 +113,8 @@ Return the 6-component zero vector (integrates with Julia's `zero` interface).
 """
 Base.zero(::Type{VEC6}) = VEC6(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
+Base.length(a::VEC6) = 6
+Base.broadcastable(v::VEC6) = Ref(v)
 
 # ------------------------------------------------------------------------------
 # Arithmetic operators  (component-wise)

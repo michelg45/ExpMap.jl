@@ -139,8 +139,8 @@ function frame_interpol_2D(H::Vector{NodeFrame}, F::Vector{Float64},
 
     # ── Reference surface Jacobian J_P and its inverse ────────────────────────
     # J_P[i,α] = i-th translational component of f_P_ref[α]  (i,α = 1,2)
-    J_P = [f_P_ref[1][1]  f_P_ref[2][1];
-           f_P_ref[1][2]  f_P_ref[2][2]]
+    J_P = [f_P_ref[1][1]  f_P_ref[1][2];
+           f_P_ref[2][1]  f_P_ref[2][2]]
     invJ = inv(J_P)
 
     # ── Transform strain vectors to physical surface coordinates ──────────────
