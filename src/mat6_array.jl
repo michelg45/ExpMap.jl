@@ -2,11 +2,14 @@
 # mat6_array.jl — Conversion of MAT6 Collections to Plain Float64 Arrays
 # ==============================================================================
 #
-# Provides two conversion functions that unpack collections of `MAT6` objects
-# into standard Julia `Array{Float64,2}` (matrix) by assembling the individual
-# 6×6 blocks into a single dense block matrix.
+# Provides three conversion functions that unpack collections of `VEC6` or
+# `MAT6` objects into standard Julia `Array{Float64}` by assembling the
+# individual blocks into a single dense array.
 #
 # LAYOUT CONVENTIONS
+#   vec_vec6  :  Vector{VEC6}  (length N)   →  Vector{Float64}  (6N)
+#                V[k] occupies indices  (k-1)·6+1 : k·6  of the result.
+#
 #   vec_mat6  :  Vector{MAT6}  (length N)   →  Array{Float64,2}  (6 × 6N)
 #                V[k] occupies columns  (k-1)·6+1 : k·6  of the result.
 #
@@ -14,12 +17,50 @@
 #                M[p,q] occupies rows  (p-1)·6+1 : p·6
 #                         and columns  (q-1)·6+1 : q·6  of the result.
 #
-# In both cases the 6×6 block layout is preserved, so the result can be used
-# directly as a conventional dense matrix (I/O, linear solvers, plotting).
+# In all cases the block layout is preserved, so the result can be used
+# directly as a conventional dense array (I/O, linear solvers, plotting).
 #
 # EXTERNAL DEPENDENCIES
 #   MAT6 (see MAT6.jl)  —  provides the getindex(m, i, j) accessor
 # ==============================================================================
+
+
+"""
+    vec_vec6(V::Vector{VEC6}) → Vector{Float64}
+
+Assemble a length-`N` vector of `VEC6` vectors into a single `6N`-element
+`Vector{Float64}`.
+
+Block `k` (1-based) of the result contains `V[k]`:
+- indices : (k-1)·6+1 : k·6
+
+## Arguments
+- `V` : vector of `N` `VEC6` vectors
+
+## Returns
+`a::Vector{Float64}` of length `6N`
+
+## Example
+```julia
+julia> V = [VEC6(1.0,2.0,3.0,4.0,5.0,6.0), zero(VEC6)];
+julia> a = vec_vec6(V)          # length 12
+julia> a[1:6] == V[1].v
+true
+```
+
+**See also:** [`vec_mat6`](@ref), [`VEC6`](@ref)
+"""
+function vec_vec6(V::Vector{VEC6})
+    N = length(V)
+    a = Vector{Float64}(undef, 6*N)
+    for k in 1:N
+        r0 = (k-1)*6
+        for i in 1:6
+            a[r0+i] = V[k][i]
+        end
+    end
+    return a
+end
 
 
 """

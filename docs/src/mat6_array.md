@@ -10,6 +10,19 @@ side-by-side into a single dense block matrix.
 
 ## Block layout
 
+### `vec_vec6` — Vector{VEC6} → 6N
+
+A length-`N` vector is assembled into a `6N`-element flat vector.
+Block `k` occupies indices `(k-1)·6+1 : k·6`:
+
+```
+┌──────────┬──────────┬─────┬──────────┐
+│  V[1]    │  V[2]    │ … │  V[N]    │
+│  (6 el.) │  (6 el.) │   │  (6 el.) │
+└──────────┴──────────┴─────┴──────────┘
+ idx 1:6    idx 7:12        idx 6N-5:6N
+```
+
 ### `vec_mat6` — Vector{MAT6} → 6 × 6N
 
 A length-`N` vector is assembled into a `6 × 6N` block-row matrix.
@@ -51,6 +64,7 @@ I/O packages.
 **See also:** [`MAT6`](@ref), [`VEC6`](@ref)
 
 ```@docs
+vec_vec6
 vec_mat6
 mat_mat6
 ```

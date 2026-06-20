@@ -65,7 +65,7 @@ include(joinpath(@__DIR__, "frame_interpol_2D.jl"))
 
 # ── Public API ────────────────────────────────────────────────────────────────
 export VEC3, MAT3, RV3, VEC6, MAT6, NodeFrame
-export vec_mat6, mat_mat6
+export vec_vec6, vec_mat6, mat_mat6
 export R_SO3, invR_SO3, euler_to_RV3, frame_on_line, T_SO3, invT_SO3
 export T_functions, invT_functions
 export tilde, outerp, dotp, crossp, norm2
