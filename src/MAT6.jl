@@ -105,6 +105,9 @@ Return the 6×6 zero matrix (integrates with Julia's `zero` interface).
 """
 Base.zero(::Type{MAT6}) = MAT6(ntuple(_ -> zero(VEC6), 6)...)
 
+Base.length(m::MAT6) = 36
+Base.broadcastable(m::MAT6) = Ref(m)
+
 """
     one(MAT6) → MAT6
 
