@@ -144,11 +144,19 @@ Base.:/(v::VEC6, λ::Real)  = VEC6(ntuple(i ->  v[i] / λ,   6)...)
 # ------------------------------------------------------------------------------
 
 """
+    dotp(a::VEC6, b::VEC6) → Float64
+
+Return the dot product `a · b = Σᵢ aᵢ bᵢ`.
+"""
+dotp(a::VEC6, b::VEC6) = a.x1*b.x1 + a.x2*b.x2 + a.x3*b.x3 +
+                          a.x4*b.x4 + a.x5*b.x5 + a.x6*b.x6
+
+"""
     norm2(v::VEC6) → Float64
 
 Return the Euclidean norm  `‖v‖ = √(x1² + x2² + x3² + x4² + x5² + x6²)`.
 """
-norm2(v::VEC6) = sqrt(v.x1^2 + v.x2^2 + v.x3^2 + v.x4^2 + v.x5^2 + v.x6^2)
+norm2(v::VEC6) = sqrt(dotp(v, v))
 
 
 # ------------------------------------------------------------------------------
