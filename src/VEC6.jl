@@ -152,6 +152,15 @@ dotp(a::VEC6, b::VEC6) = a.x1*b.x1 + a.x2*b.x2 + a.x3*b.x3 +
                           a.x4*b.x4 + a.x5*b.x5 + a.x6*b.x6
 
 """
+    hadamard(a::VEC6, b::VEC6) → VEC6
+
+Return the component-wise (Hadamard) product `a ∘ b`:
+`(a ∘ b)[i] = a[i] · b[i]` for i = 1 … 6.
+"""
+hadamard(a::VEC6, b::VEC6) = VEC6(a.x1*b.x1, a.x2*b.x2, a.x3*b.x3,
+                                   a.x4*b.x4, a.x5*b.x5, a.x6*b.x6)
+
+"""
     norm2(v::VEC6) → Float64
 
 Return the Euclidean norm  `‖v‖ = √(x1² + x2² + x3² + x4² + x5² + x6²)`.
