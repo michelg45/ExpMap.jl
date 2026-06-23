@@ -176,6 +176,9 @@ Base.:+(m1::MAT6, m2::MAT6) = MAT6(ntuple(j -> m1[j] + m2[j], 6)...)
 """    m1 - m2  →  MAT6   (column-wise subtraction)    """
 Base.:-(m1::MAT6, m2::MAT6) = MAT6(ntuple(j -> m1[j] - m2[j], 6)...)
 
+"""    -m       →  MAT6   (unary negation)              """
+Base.:-(m::MAT6) = MAT6(ntuple(j -> -m[j], 6)...)
+
 """    s * m    →  MAT6   (scalar multiplication, scalar on left)  """
 Base.:*(s::Float64, m::MAT6) = MAT6(ntuple(j -> s * getfield(m, j), 6)...)
 
